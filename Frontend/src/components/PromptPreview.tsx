@@ -131,9 +131,12 @@ const PromptPreview: React.FC<PromptPreviewProps> = ({ prompt, isOpen, onClose }
                 <span>Original Prompt</span>
                 <div className="flex gap-2">
                   <Badge variant="outline">{prompt.category}</Badge>
-                  <Button variant="ghost" size="sm" onClick={handleCopyPrompt}>
+                  <Button variant="ghost" size="sm" onClick={handleCopyPrompt} disabled={!prompt.content} title={!prompt.content ? "Purchase to unlock" : "Copy prompt"}>
                     <Copy className="w-4 h-4" />
                   </Button>
+                  {!prompt.content && (
+                    <span className="text-xs text-muted-foreground ml-2">Purchase to unlock</span>
+                  )}
                 </div>
               </CardTitle>
             </CardHeader>

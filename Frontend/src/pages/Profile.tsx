@@ -21,7 +21,8 @@ import {
   Link as LinkIcon,
   TrendingUp,
   Award,
-  Zap
+  Zap,
+  Trash2
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -78,15 +79,36 @@ const Profile = () => {
     });
   };
 
+  // Add delete handler
+  const handleDeletePrompt = async (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this prompt?')) return;
+    try {
+      const token = localStorage.getItem('jwt_token');
+      await axios.delete(`http://localhost:5000/prompts/${id}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      toast({ title: 'Prompt deleted', description: 'Your prompt has been deleted.' });
+      setUserPrompts(prev => prev.filter(p => p.id !== id));
+    } catch (err: any) {
+      toast({ title: 'Delete failed', description: err?.response?.data?.message || 'Could not delete prompt', variant: 'destructive' });
+    }
+  };
+
   if (!isAuthenticated || !user) {
     return null; // Will redirect in useEffect
   }
 
   const userInitials = user.username.slice(0, 2).toUpperCase();
-  const joinDate = new Date(user.joinedAt).toLocaleDateString('en-US', {
-    month: 'long',
-    year: 'numeric'
-  });
+  let joinDate = 'Unknown';
+  if (user.joinedAt) {
+    const date = new Date(user.joinedAt);
+    if (!isNaN(date.getTime())) {
+      joinDate = date.toLocaleDateString('en-US', {
+        month: 'long',
+        year: 'numeric'
+      });
+    }
+  }
 
   const stats = {
     prompts: userPrompts.length,
@@ -282,6 +304,14 @@ const Profile = () => {
                                     </Badge>
                                   )}
                                 </div>
+                              </div>
+                              <div className="flex gap-1 items-center">
+                                <Button variant="ghost" size="icon" onClick={() => navigate(`/create?edit=${prompt.id}`)}>
+                                  <Edit3 className="h-5 w-5 text-blue-500" />
+                                </Button>
+                                <Button variant="ghost" size="icon" onClick={() => handleDeletePrompt(prompt.id)}>
+                                  <Trash2 className="h-5 w-5 text-red-500" />
+                                </Button>
                               </div>
                             </div>
                           </CardHeader>

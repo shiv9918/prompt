@@ -23,7 +23,7 @@ const priceFilters = [
   { label: 'Under $25', value: 'under25' }
 ];
 
-const CategoryFilter = ({ selectedCategory = 'All', onCategoryChange }) => {
+const CategoryFilter = ({ selectedCategory = 'All', onCategoryChange, sortOption, onSortChange }) => {
   const [selectedPrice, setSelectedPrice] = useState('all');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [showFilters, setShowFilters] = useState(false);
@@ -81,12 +81,16 @@ const CategoryFilter = ({ selectedCategory = 'All', onCategoryChange }) => {
 
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <span>Sort by:</span>
-            <select className="bg-background border border-border rounded px-2 py-1 text-sm">
-              <option>Latest</option>
-              <option>Most Popular</option>
-              <option>Highest Rated</option>
-              <option>Price: Low to High</option>
-              <option>Price: High to Low</option>
+            <select
+              className="bg-background border border-border rounded px-2 py-1 text-sm"
+              value={sortOption}
+              onChange={e => onSortChange && onSortChange(e.target.value)}
+            >
+              <option value="latest">Latest</option>
+              <option value="popular">Most Popular</option>
+              <option value="rating">Highest Rated</option>
+              <option value="priceLow">Price: Low to High</option>
+              <option value="priceHigh">Price: High to Low</option>
             </select>
           </div>
         </div>

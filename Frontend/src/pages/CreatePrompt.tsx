@@ -257,11 +257,11 @@ const CreatePrompt = () => {
         // Optionally, redirect to pricing page after a short delay
         // setTimeout(() => navigate('/pricing'), 2000);
       } else {
-        toast({
-          title: "Failed to save prompt",
+      toast({
+        title: "Failed to save prompt",
           description: backendMsg || error?.message || "Please try again.",
-          variant: "destructive",
-        });
+        variant: "destructive",
+      });
       }
     } finally {
       setIsSaving(false);

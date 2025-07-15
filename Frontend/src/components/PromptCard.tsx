@@ -21,6 +21,7 @@ interface PromptCardProps {
     tags: string[];
     category: string;
     creator: string;
+    username: string; // Make this required
     isPremium?: boolean;
     is_premium?: boolean;
     price?: number;
@@ -155,14 +156,15 @@ const PromptCard: React.FC<PromptCardProps> = ({ prompt, onPreview, onDeleted, o
             </div>
           </div>
           <div className="flex gap-1 items-center">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleLike}
-            className={`shrink-0 ${isLiked ? 'text-red-500' : 'text-muted-foreground'}`}
-          >
-            <Heart className={`h-5 w-5 ${isLiked ? 'fill-current' : ''}`} />
-          </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleLike}
+              className={`shrink-0 ${isLiked ? 'text-red-500' : 'text-muted-foreground'}`}
+              disabled={false}
+            >
+              <Heart className={`h-5 w-5 ${isLiked ? 'fill-current' : ''}`} />
+            </Button>
             {isOwner && (
               <>
                 <Button variant="ghost" size="icon" onClick={() => navigate(`/create?edit=${prompt.id}`)}>
@@ -210,7 +212,7 @@ const PromptCard: React.FC<PromptCardProps> = ({ prompt, onPreview, onDeleted, o
               {prompt.rating}
             </div>
           </div>
-          <p className="text-sm text-muted-foreground">by {prompt.creator}</p>
+          <p className="text-sm text-muted-foreground">by {prompt.username}</p>
         </div>
 
         <div className="flex gap-2">
@@ -227,20 +229,17 @@ const PromptCard: React.FC<PromptCardProps> = ({ prompt, onPreview, onDeleted, o
             )}
             AI Preview
           </Button>
-          <Button variant="ghost" size="sm" onClick={handleCopy}>
-            <Copy className="w-4 h-4" />
-          </Button>
-          {isPremiumPrompt ? (
+          {/* Copy or Buy button logic */}
+          {prompt.content ? (
+            <Button variant="ghost" size="sm" onClick={handleCopy} title="Copy prompt">
+              <Copy className="w-4 h-4" />
+            </Button>
+          ) : (
             <Button size="sm" className="btn-ai" onClick={handleBuyWithStripe} disabled={isLoading}>
               {isLoading ? (
                 <div className="w-4 h-4 animate-spin rounded-full border-2 border-primary border-t-transparent mr-2" />
               ) : null}
-              ₹{price} Buy with Stripe
-            </Button>
-          ) : (
-            <Button variant="outline" size="sm">
-              <Download className="w-4 h-4 mr-1" />
-              Free
+              Purchase for use
             </Button>
           )}
         </div>

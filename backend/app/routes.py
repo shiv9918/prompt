@@ -45,14 +45,28 @@ def create_prompt():
 
 @routes.route('/prompts', methods=['GET'])
 def get_prompts():
+    from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
+    try:
+        verify_jwt_in_request(optional=True)
+        user_id = get_jwt_identity()
+    except Exception:
+        user_id = None
     prompts = Prompt.query.order_by(Prompt.created_at.desc()).all()
     result = []
     for prompt in prompts:
+        # Hide content for premium prompts unless user is owner or has purchased
+        show_content = True
+        if prompt.is_premium:
+            if not user_id or (str(prompt.user_id) != str(user_id)):
+                from .models import Purchase
+                purchase = Purchase.query.filter_by(user_id=user_id, prompt_id=prompt.id).first() if user_id else None
+                if not purchase:
+                    show_content = False
         result.append({
             'id': prompt.id,
             'user_id': prompt.user_id,
             'title': prompt.title,
-            'content': prompt.content,
+            'content': prompt.content if show_content else None,
             'category': prompt.category,
             'is_premium': prompt.is_premium,
             'price': prompt.price,
@@ -64,6 +78,32 @@ def get_prompts():
 @routes.route('/prompts/<int:prompt_id>', methods=['GET'])
 def get_prompt(prompt_id):
     prompt = Prompt.query.get_or_404(prompt_id)
+    # If the prompt is premium, check if the user is allowed to view the content
+    if prompt.is_premium:
+        user_id = None
+        try:
+            from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
+            verify_jwt_in_request(optional=True)
+            user_id = get_jwt_identity()
+        except Exception:
+            pass
+        # Only show content if user is owner or has purchased
+        if not user_id or (str(prompt.user_id) != str(user_id)):
+            from .models import Purchase
+            purchase = Purchase.query.filter_by(user_id=user_id, prompt_id=prompt_id).first() if user_id else None
+            if not purchase:
+                return jsonify({
+                    'id': prompt.id,
+                    'user_id': prompt.user_id,
+                    'title': prompt.title,
+                    'content': None,  # Hide content
+                    'category': prompt.category,
+                    'is_premium': prompt.is_premium,
+                    'price': prompt.price,
+                    'created_at': prompt.created_at.isoformat(),
+                    'username': prompt.user.username if prompt.user else None,
+                    'msg': 'You must purchase this premium prompt to view the content.'
+                })
     return jsonify({
         'id': prompt.id,
         'user_id': prompt.user_id,

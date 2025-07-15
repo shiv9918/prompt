@@ -14,7 +14,13 @@ const categories = [
   'Business', 'Creative', 'Development', 'Marketing', 'Education', 'Design', 'Research', 'Social Media', 'E-commerce', 'Healthcare'
 ];
 
-const PromptGrid = ({ selectedCategory = 'All' }) => {
+interface PromptGridProps {
+  selectedCategory?: string;
+  searchTerm?: string;
+  sortOption?: string;
+}
+
+const PromptGrid = ({ selectedCategory = 'All', searchTerm = '', sortOption = 'latest' }: PromptGridProps) => {
   const [prompts, setPrompts] = useState([]);
   const [selectedPrompt, setSelectedPrompt] = useState<any | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
@@ -65,10 +71,44 @@ const PromptGrid = ({ selectedCategory = 'All' }) => {
     }
   };
 
-  // Filter prompts by selectedCategory
-  const filteredPrompts = selectedCategory === 'All'
-    ? prompts
-    : prompts.filter((p: any) => p.category === selectedCategory);
+  // Filter prompts by category and search term
+  let filteredPrompts = prompts;
+  if (selectedCategory && selectedCategory !== 'All') {
+    filteredPrompts = filteredPrompts.filter((p: any) => p.category === selectedCategory);
+  }
+  if (searchTerm && searchTerm.trim() !== "") {
+    filteredPrompts = filteredPrompts.filter((p: any) =>
+      p.title.toLowerCase().includes(searchTerm) ||
+      (p.content && p.content.toLowerCase().includes(searchTerm))
+    );
+  }
+
+  // Sort prompts according to sortOption
+  filteredPrompts = [...filteredPrompts];
+  switch (sortOption) {
+    case 'popular':
+      filteredPrompts.sort((a, b) => (b.likes || 0) - (a.likes || 0));
+      break;
+    case 'rating':
+      filteredPrompts.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+      break;
+    case 'priceLow':
+      filteredPrompts.sort((a, b) => (a.price || 0) - (b.price || 0));
+      break;
+    case 'priceHigh':
+      filteredPrompts.sort((a, b) => (b.price || 0) - (a.price || 0));
+      break;
+    case 'latest':
+    default:
+      // If created_at exists, sort by it desc; else by id desc
+      filteredPrompts.sort((a, b) => {
+        if (a.created_at && b.created_at) {
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        }
+        return (b.id || 0) - (a.id || 0);
+      });
+      break;
+  }
 
   return (
     <>
