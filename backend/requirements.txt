@@ -1,7 +1,9 @@
-Flask
-Flask-JWT-Extended
-Flask-SQLAlchemy
-psycopg2-binary
-python-dotenv
-alembic 
-gunicorn
+  Flask
+  Flask-JWT-Extended
+  Flask-SQLAlchemy
+  gunicorn
+  psycopg2-binary
+  python-dotenv
+  flask-cors
+  alembic
+  stripe
