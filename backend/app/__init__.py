@@ -13,7 +13,12 @@ def create_app():
     app.config.from_object(Config)
     db.init_app(app)
     JWTManager(app)
-    CORS(app, origins=["http://localhost:8080"], supports_credentials=True)
+    # Allow CORS from Vercel frontend and localhost
+    CORS(app, origins=[
+        "https://promptpilot-flax.vercel.app",
+        "http://localhost:5173",
+        "http://localhost:8080"
+    ], supports_credentials=True)
     app.register_blueprint(auth_bp)
     app.register_blueprint(routes)
     app.register_blueprint(payment_bp)
