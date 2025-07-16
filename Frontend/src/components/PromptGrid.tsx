@@ -29,7 +29,7 @@ const PromptGrid = ({ selectedCategory = 'All', searchTerm = '', sortOption = 'l
   const [editForm, setEditForm] = useState({ title: '', content: '', category: '' });
 
   useEffect(() => {
-    axios.get('http://localhost:5000/prompts')
+    axios.get(`${import.meta.env.VITE_API_URL}/prompts`)
       .then(res => setPrompts(res.data))
       .catch(() => setPrompts([]));
   }, []);
@@ -59,7 +59,7 @@ const PromptGrid = ({ selectedCategory = 'All', searchTerm = '', sortOption = 'l
     try {
       const token = localStorage.getItem('jwt_token');
       await axios.put(
-        `http://localhost:5000/prompts/${editingPrompt.id}`,
+        `${import.meta.env.VITE_API_URL}/prompts/${editingPrompt.id}`,
         editForm,
         { headers: { 'Authorization': `Bearer ${token}` } }
       );

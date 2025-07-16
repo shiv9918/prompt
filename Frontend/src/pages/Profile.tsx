@@ -46,7 +46,7 @@ const Profile = () => {
   const [userPrompts, setUserPrompts] = useState<any[]>([]);
   useEffect(() => {
     if (user) {
-      axios.get('http://localhost:5000/prompts')
+      axios.get(`${import.meta.env.VITE_API_URL}/prompts`)
         .then(res => {
           setUserPrompts(res.data.filter((prompt: any) => prompt.user_id === user.id));
         })
@@ -84,7 +84,7 @@ const Profile = () => {
     if (!window.confirm('Are you sure you want to delete this prompt?')) return;
     try {
       const token = localStorage.getItem('jwt_token');
-      await axios.delete(`http://localhost:5000/prompts/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/prompts/${id}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       toast({ title: 'Prompt deleted', description: 'Your prompt has been deleted.' });

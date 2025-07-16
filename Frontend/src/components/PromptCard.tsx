@@ -73,7 +73,7 @@ const PromptCard: React.FC<PromptCardProps> = ({ prompt, onPreview, onDeleted, o
     if (!window.confirm('Are you sure you want to delete this prompt?')) return;
     try {
       const token = localStorage.getItem('jwt_token');
-      await axios.delete(`http://localhost:5000/prompts/${prompt.id}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/prompts/${prompt.id}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       toast({ title: 'Prompt deleted', description: 'Your prompt has been deleted.' });
@@ -114,7 +114,7 @@ const PromptCard: React.FC<PromptCardProps> = ({ prompt, onPreview, onDeleted, o
     }
     setIsLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/create-checkout-session', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/create-checkout-session`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

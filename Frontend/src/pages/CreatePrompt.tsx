@@ -63,7 +63,7 @@ const CreatePrompt = () => {
   // Fetch prompt for edit mode
   useEffect(() => {
     if (editId) {
-      axios.get(`http://localhost:5000/prompts/${editId}`)
+      axios.get(`${import.meta.env.VITE_API_URL}/prompts/${editId}`)
         .then(res => {
           setFormData({
             title: res.data.title,
@@ -197,7 +197,7 @@ const CreatePrompt = () => {
       if (editId) {
         // Edit mode: update existing prompt
         await axios.put(
-          `http://localhost:5000/prompts/${editId}`,
+          `${import.meta.env.VITE_API_URL}/prompts/${editId}`,
           {
             title: formData.title,
             content: formData.content,
@@ -216,7 +216,7 @@ const CreatePrompt = () => {
       } else {
         // Create mode: create new prompt
         await axios.post(
-          'http://localhost:5000/prompts',
+          `${import.meta.env.VITE_API_URL}/prompts`,
           {
             title: formData.title,
             content: formData.content,
