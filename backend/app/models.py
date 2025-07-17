@@ -29,3 +29,15 @@ class Purchase(db.Model):
 
     user = db.relationship('User', backref=db.backref('purchases', lazy=True))
     prompt = db.relationship('Prompt', backref=db.backref('purchases', lazy=True)) 
+
+class Sale(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    prompt_id = db.Column(db.Integer, db.ForeignKey('prompt.id'), nullable=False)
+    seller_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    buyer_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    price = db.Column(db.Numeric(10, 2), nullable=False)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+
+    prompt = db.relationship('Prompt', backref=db.backref('sales', lazy=True))
+    seller = db.relationship('User', foreign_keys=[seller_id], backref=db.backref('sales_made', lazy=True))
+    buyer = db.relationship('User', foreign_keys=[buyer_id], backref=db.backref('sales_bought', lazy=True)) 

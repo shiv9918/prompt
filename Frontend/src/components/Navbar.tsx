@@ -43,14 +43,17 @@ const Navbar = () => {
             <Button variant="ghost" size="sm" className="hidden sm:flex" asChild>
               <Link to="/pricing">Pricing</Link>
             </Button>
-            
-            {/* Icons */}
-            <Button variant="ghost" size="icon" className="relative">
-              <ShoppingCart className="h-5 w-5" />
-              <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs">
-                2
-              </Badge>
-            </Button>
+            {/* Icons: Only show buy icon if logged in */}
+            {isAuthenticated && (
+              <Button variant="ghost" size="icon" className="relative" asChild>
+                <Link to="/buy">
+                  <ShoppingCart className="h-5 w-5" />
+                  <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs">
+                    2
+                  </Badge>
+                </Link>
+              </Button>
+            )}
             
             {/* User Menu */}
             {isAuthenticated ? (

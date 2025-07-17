@@ -18,7 +18,11 @@ def create_app():
         "https://promptpilot-flax.vercel.app",
         "http://localhost:5173",
         "http://localhost:8080"
-    ], supports_credentials=True)
+    ],
+    supports_credentials=True,
+    allow_headers=["Content-Type", "Authorization"],
+    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    )
     app.register_blueprint(auth_bp)
     app.register_blueprint(routes)
     app.register_blueprint(payment_bp)

@@ -13,6 +13,7 @@ import CreatePrompt from "./pages/CreatePrompt";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import Pricing from "./pages/Pricing";
+import Buy from './pages/Buy';
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ const App = () => (
                   <Route path="/create" element={<CreatePrompt />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/pricing" element={<Pricing />} />
+                  <Route path="/buy" element={<Buy />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </div>

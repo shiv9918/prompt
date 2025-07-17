@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, abort
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from .auth import bp as auth_bp
-from .models import User, Prompt, Purchase
+from .models import User, Prompt, Purchase, Sale
 
 routes = Blueprint('routes', __name__)
 
@@ -179,4 +179,20 @@ def ai_preview():
     if prompt.is_premium and user.plan not in ['pro', 'enterprise']:
         return jsonify({'msg': 'Upgrade to Pro to use AI Preview on premium prompts.'}), 403
     # Here you would call your AI/gemini logic and return the result
-    return jsonify({'msg': 'AI preview would be generated here.'}) 
+    return jsonify({'msg': 'AI preview would be generated here.'})
+
+@routes.route('/api/sales', methods=['GET', 'OPTIONS'])
+@jwt_required()
+def get_sales():
+    user_id = get_jwt_identity()
+    sales = Sale.query.filter_by(seller_id=user_id).order_by(Sale.date.desc()).all()
+    sales_data = []
+    for sale in sales:
+        sales_data.append({
+            'id': sale.id,
+            'buyer': sale.buyer.email if sale.buyer else None,
+            'prompt': sale.prompt.title if sale.prompt else None,
+            'price': float(sale.price),
+            'date': sale.date.strftime('%Y-%m-%d'),
+        })
+    return jsonify(sales_data) 
