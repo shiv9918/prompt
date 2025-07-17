@@ -181,7 +181,7 @@ def ai_preview():
     # Here you would call your AI/gemini logic and return the result
     return jsonify({'msg': 'AI preview would be generated here.'})
 
-@routes.route('/api/sales', methods=['GET', 'OPTIONS'])
+@routes.route('/api/sales', methods=['GET'], provide_automatic_options=False)
 @jwt_required()
 def get_sales():
     user_id = get_jwt_identity()
