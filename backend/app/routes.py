@@ -195,4 +195,8 @@ def get_sales():
             'price': float(sale.price),
             'date': sale.date.strftime('%Y-%m-%d'),
         })
-    return jsonify(sales_data) 
+    return jsonify(sales_data)
+
+@routes.route('/api/sales', methods=['OPTIONS'])
+def sales_options():
+    return '', 200 
