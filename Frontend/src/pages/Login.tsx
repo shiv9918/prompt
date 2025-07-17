@@ -179,15 +179,6 @@ const Login = () => {
             </div>
           </CardContent>
         </Card>
-
-        {/* Demo Account Info */}
-        <Card className="mt-4 border-yellow-500/20 bg-yellow-500/5">
-          <CardContent className="p-4">
-            <p className="text-sm text-center text-muted-foreground">
-              <strong>Demo:</strong> Create any account to test the app. All data is stored locally.
-            </p>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );
