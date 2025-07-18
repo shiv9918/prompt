@@ -239,7 +239,7 @@ const PromptCard: React.FC<PromptCardProps> = ({ prompt, onPreview, onDeleted, o
               {isLoading ? (
                 <div className="w-4 h-4 animate-spin rounded-full border-2 border-primary border-t-transparent mr-2" />
               ) : null}
-              Purchase for use
+              Purchase for ₹{price}
             </Button>
           )}
         </div>

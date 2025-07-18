@@ -76,7 +76,7 @@ const Buy: React.FC = () => {
             <CardHeader className="flex flex-col items-center">
               <CardTitle className="flex items-center gap-2 text-3xl font-bold gradient-text">
                 <DollarSign className="w-6 h-6 text-accent" />
-                {loading ? '...' : `$${totalEarned}`}
+                {loading ? '...' : `₹${totalEarned}`}
               </CardTitle>
               <span className="text-muted-foreground mt-2">Total Earned</span>
             </CardHeader>
@@ -109,7 +109,7 @@ const Buy: React.FC = () => {
                     <tr key={idx} className="border-t hover:bg-accent/10 transition-colors duration-200">
                       <td className="p-3 font-medium">{sale.buyer}</td>
                       <td className="p-3">{sale.prompt}</td>
-                      <td className="p-3 text-green-600 font-semibold">${sale.price}</td>
+                      <td className="p-3 text-green-600 font-semibold">₹{sale.price}</td>
                       <td className="p-3">{sale.date}</td>
                     </tr>
                   ))}

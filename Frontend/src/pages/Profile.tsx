@@ -300,7 +300,7 @@ const Profile = () => {
                                   </Badge>
                                   {prompt.isPremium && (
                                     <Badge variant="premium" className="text-xs">
-                                      ${prompt.price}
+                                      ₹{prompt.price}
                                     </Badge>
                                   )}
                                 </div>

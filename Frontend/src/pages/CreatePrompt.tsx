@@ -459,9 +459,9 @@ const CreatePrompt = () => {
 
                 {formData.isPremium && (
                   <div>
-                    <label className="text-sm font-medium mb-2 block">Price (USD)</label>
+                    <label className="text-sm font-medium mb-2 block">Price (INR)</label>
                     <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">₹</span>
                       <Input
                         type="number"
                         min="1"
@@ -539,7 +539,7 @@ const CreatePrompt = () => {
                     </Badge>
                     {formData.isPremium && (
                       <Badge variant="premium" className="text-xs">
-                        ${formData.price}
+                        ₹{formData.price}
                       </Badge>
                     )}
                   </div>

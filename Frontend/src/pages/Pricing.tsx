@@ -76,7 +76,7 @@ const Pricing = () => (
                   {plan.name}
                 </CardTitle>
                 <div className="text-4xl font-extrabold mb-2">
-                  {plan.price === 0 ? 'Free' : `$${plan.price}`}
+                  {plan.price === 0 ? 'Free' : `₹${plan.price}`}
                   {plan.price !== 0 && <span className="text-base font-normal text-muted-foreground">/mo</span>}
                 </div>
               </CardHeader>
